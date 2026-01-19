@@ -146,7 +146,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center py-6 text-gray-500">
+                        <td colspan="9" class="text-center py-6 text-gray-500">
                             Data tidak ditemukan
                         </td>
                     </tr>

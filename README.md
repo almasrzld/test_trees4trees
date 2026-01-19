@@ -10,10 +10,10 @@ Repository ini berisi implementasi **platform web** untuk melakukan **merge data
 
 Membangun aplikasi web untuk:
 
--   Merge database BHL ke database utama GEKO
--   Menyesuaikan struktur data BHL agar mengikuti struktur GEKO
--   Mengidentifikasi data duplikat dan data baru
--   Menyediakan fitur filtering dan statistik hasil merge
+- Merge database BHL ke database utama GEKO
+- Menyesuaikan struktur data BHL agar mengikuti struktur GEKO
+- Mengidentifikasi data duplikat dan data baru
+- Menyediakan fitur filtering dan statistik hasil merge
 
 ---
 
@@ -21,9 +21,9 @@ Membangun aplikasi web untuk:
 
 Terdapat 2 sumber database dalam bentuk CSV:
 
-1. **GEKO (Main Database)**  
+1. **GEKO (Main Database)**
    Database lahan utama yang digunakan oleh Trees4Trees.
-2. **BHL (Legacy Database)**  
+2. **BHL (Legacy Database)**
    Database lama yang perlu dimigrasikan ke struktur GEKO.
 
 ---
@@ -32,24 +32,24 @@ Terdapat 2 sumber database dalam bentuk CSV:
 
 ### 1. Platform Web
 
--   Dibangun menggunakan **Laravel**
--   Proses merge dilakukan di backend (PHP + MySQL)
--   **Tidak menggunakan Excel** untuk merge data
+- Dibangun menggunakan **Laravel**
+- Proses merge dilakukan di backend (PHP + MySQL)
+- **Tidak menggunakan Excel** untuk merge data
 
 ---
 
 ### 2. Penyesuaian Struktur Database
 
--   Struktur database BHL disesuaikan dengan struktur GEKO
--   Kolom yang tidak tersedia pada data BHL akan diisi dengan `NULL`
--   Data hasil merge disimpan pada tabel utama `lahans`
+- Struktur database BHL disesuaikan dengan struktur GEKO
+- Kolom yang tidak tersedia pada data BHL akan diisi dengan `NULL`
+- Data hasil merge disimpan pada tabel utama `lahans`
 
 ---
 
 ### 3. Aturan Merge Data
 
--   Database GEKO menjadi acuan utama
--   Identifikasi duplikasi berdasarkan **`lahan_no`**
+- Database GEKO menjadi acuan utama
+- Identifikasi duplikasi berdasarkan **`lahan_no`**
 
 | Kondisi Data               | Perlakuan                  |
 | -------------------------- | -------------------------- |
@@ -63,8 +63,8 @@ Terdapat 2 sumber database dalam bentuk CSV:
 
 Setiap data dapat diidentifikasi berdasarkan:
 
--   `source_data` → GEKO / BHL
--   `is_duplicate` → true / false
+- `source_data` → GEKO / BHL
+- `is_duplicate` → true / false
 
 ---
 
@@ -105,9 +105,7 @@ Digunakan untuk menyimpan data mentah dari masing-masing sumber.
 Duplikasi ditentukan jika:
 
 ```
-
 lahan_no dari BHL sudah ada di database GEKO
-
 ```
 
 Contoh query identifikasi duplikat:
@@ -127,9 +125,9 @@ HAVING COUNT(*) > 1;
 
 Filter data berdasarkan:
 
--   Desa
--   Kecamatan
--   Kota / Kabupaten
+- Desa
+- Kecamatan
+- Kota / Kabupaten
 
 ---
 
@@ -137,34 +135,121 @@ Filter data berdasarkan:
 
 Menampilkan informasi:
 
--   Total lahan
--   Total petani (unik)
--   Total lahan dari GEKO
--   Total lahan dari BHL
+- Total lahan
+- Total petani (unik)
+- Total lahan dari GEKO
+- Total lahan dari BHL
 
 ---
 
 ## Tampilan UI
 
--   Menggunakan **Tailwind CSS**
--   Penanda warna data:
+- Menggunakan **Tailwind CSS**
 
-    -   GEKO → Hijau
-    -   BHL → Biru
-    -   Duplicate → Merah
+- Penanda warna data:
+    - GEKO → Hijau
+    - BHL → Biru
+    - Duplicate → Merah
 
--   Mendukung pagination untuk data besar
+- Mendukung pagination untuk data besar
+
+---
+
+## Cara Menjalankan Aplikasi
+
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi secara lokal:
+
+1. Clone repository
+
+    ```bash
+    git clone https://github.com/almasrzld/test_trees4trees
+    ```
+
+2. Masuk ke folder project
+
+    ```bash
+    cd test_trees4trees
+    ```
+
+3. Install dependency PHP
+
+    ```bash
+    composer install
+    ```
+
+4. Install dependency frontend
+
+    ```bash
+    npm install
+    ```
+
+5. Salin file environment
+
+    ```bash
+    cp .env.example .env
+    ```
+
+6. Generate application key
+
+    ```bash
+    php artisan key:generate
+    ```
+
+7. Atur koneksi database pada file `.env`, lalu jalankan migrasi
+
+    ```bash
+    php artisan migrate
+    ```
+
+8. Tambahkan file data CSV ke folder berikut:
+
+    ```
+    storage/app/data/
+    ```
+
+    - `LahanGEKO.csv`
+    - `LahanBHL.csv`
+
+9. Import data GEKO
+
+    ```bash
+    php artisan import:lahan GEKO
+    ```
+
+10. Import data BHL
+
+    ```bash
+    php artisan import:lahan BHL
+    ```
+
+11. Build asset frontend
+
+    ```bash
+    npm run build
+    ```
+
+12. Jalankan server aplikasi
+
+    ```bash
+    php artisan serve
+    ```
+
+Aplikasi dapat diakses melalui:
+
+```
+http://127.0.0.1:8000
+```
 
 ---
 
 ## Teknologi
 
--   Laravel
--   PHP
--   MySQL
--   Blade
--   Tailwind CSS
--   Eloquent ORM
+- Laravel
+- PHP
+- MySQL
+- Blade
+- Tailwind CSS
+- Eloquent ORM
 
 ---
 
@@ -172,11 +257,11 @@ Menampilkan informasi:
 
 Seluruh kebutuhan pada soal test telah terpenuhi:
 
--   Merge database tanpa Excel
--   Struktur mengikuti GEKO
--   Identifikasi data duplikat dan data baru
--   Filtering lokasi
--   Statistik total lahan dan petani
+- Merge database tanpa Excel
+- Struktur mengikuti GEKO
+- Identifikasi data duplikat dan data baru
+- Filtering lokasi
+- Statistik total lahan dan petani
 
 ---
 
